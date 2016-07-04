@@ -8,6 +8,7 @@
     android:orientation="vertical">
     <!--  不需要联动的控件-->
     <RelativeLayout
+        android:id="@+id/rl_tipcontainer_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/startColor"
@@ -59,9 +60,29 @@ CoordinatorLayout：只将需要协同的控件作为该控件的子控件，不
                         android:layout_width="250dp"
                         android:layout_height="250dp"
                         android:layout_centerInParent="true"
-
                         android:background="@drawable/outside_circle_shape">
+                        <!-- 内环-->
+                        <RelativeLayout
+                            android:layout_width="240dp"
+                            android:layout_height="240dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/inside_circle_shape">
+                            <!-- 内环上的异色 -->
+                            <RelativeLayout
+                                android:id="@+id/rl_animation_id"
+                                android:layout_width="240dp"
+                                android:layout_height="240dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/inside_nocircle_shape" />
 
+                            <!-- 自定义的容器控件，用于显示修复后的结果，以及启动修复-->
+                            <com.l000phone.mymobilesafe.weishi.view.MyRepairResultView
+                                android:id="@+id/mrrv_id"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:layout_centerInParent="true" />
+
+                        </RelativeLayout>
 
                     </RelativeLayout>
 
@@ -86,23 +107,29 @@ CoordinatorLayout：只将需要协同的控件作为该控件的子控件，不
                 android:paddingTop="24dp">
 
                 <GridLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:columnCount="2">
 
+                    <!-- 清理加速-->
                     <ImageView
+                        android:id="@+id/iv_clear_id"
                         android:padding="50dp"
                         android:src="@mipmap/clear" />
-
+                    <!-- 骚扰拦截-->
                     <ImageView
+                        android:id="@+id/iv_block_id"
                         android:padding="50dp"
                         android:src="@mipmap/block" />
-
+                    <!-- 软件管理-->
                     <ImageView
+                        android:id="@+id/iv_soft_manage_id"
                         android:padding="50dp"
                         android:src="@mipmap/soft_manage" />
-
+                    <!-- 手机杀毒-->
                     <ImageView
+                        android:id="@+id/iv_kill_id"
                         android:padding="50dp"
                         android:src="@mipmap/kill" />
 

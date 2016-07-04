@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="startColor">#D54802</color>
+    <color name="checkBeforeColor">#009900</color>
+    <color name="checkAfterColor">#00FF99</color>
+    <color name="checkingColor">#ED0000</color>
 </resources>

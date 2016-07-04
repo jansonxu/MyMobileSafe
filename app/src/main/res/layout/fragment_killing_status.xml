@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 实时显示目前正在扫描的应用-->
+    <TextView
+        android:id="@+id/tv_current_apk_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/checkBeforeColor"
+        android:textColor="#FFFFFF" />
+
+    <!-- 实时显示漏洞种类检测的状况-->
+    <ListView
+        android:id="@+id/lv_category_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_cancel_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消" />
+
+</LinearLayout>

@@ -28,6 +28,12 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" />
 
+        <!-- 杀毒界面-->
+        <activity
+            android:name=".weishi.activity.KillActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+
 
     </application>
 
