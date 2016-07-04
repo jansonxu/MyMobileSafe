@@ -10,7 +10,13 @@ import com.l000phone.mymobilesafe.MainActivity;
 import com.l000phone.mymobilesafe.R;
 
 /**
- * 初始界面
+ * Description： 初始界面<br/>
+ * Copyright (c)   2016,  Jansonxu <br/>
+ * This program is protected by copyright laws <br/>
+ * Date: 2016年07月01  下午 3:47
+ *
+ * @author 徐文波
+ * @version : 1.0
  */
 public class InitActivity extends AppCompatActivity {
 
