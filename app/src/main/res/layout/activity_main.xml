@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.l000phone.mymobilesafe.MainActivity">
+    <!-- 占位的容器控件，用于被Fragment替换-->
+    <FrameLayout
+        android:id="@+id/fl_container_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- RadioGroup,点击后，使用相应的Fragment对应的视图，替换占位的容器控件 -->
+    <RadioGroup
+        android:id="@+id/rg_id"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-</RelativeLayout>
+        android:orientation="horizontal">
+        <!-- 卫士-->
+        <RadioButton
+            android:id="@+id/rb_ws_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/weishi_selector"
+            android:button="@null"
+            android:checked="true" />
+        <!-- 工具箱-->
+        <RadioButton
+            android:id="@+id/rb_gjx_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/tool_selector"
+
+            android:button="@null" />
+        <!-- 工具箱-->
+        <RadioButton
+            android:id="@+id/rb_service_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/service_selector"
+            android:layout_marginLeft="50dp"
+            android:button="@null" />
+        <!-- 我-->
+        <RadioButton
+            android:id="@+id/rb_me_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/me_selector"
+            android:layout_marginLeft="50dp"
+            android:button="@null" />
+
+    </RadioGroup>
+
+
+</LinearLayout>

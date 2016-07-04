@@ -44,6 +44,7 @@ public class InitActivity extends AppCompatActivity {
         } else {
             //②以后，启动应用，直接跳转到主界面
             startActivity(new Intent(InitActivity.this, MainActivity.class));
+            finish();
         }
     }
 }
