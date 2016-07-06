@@ -78,10 +78,12 @@ public class KillActivity extends AppCompatActivity {
                 // 重置动画
                 ra.reset();
                 // 启动动画
+                mScan.setVisibility(View.VISIBLE);
                 mScan.startAnimation(ra);
 
                 //②使用扫描实时显示的Fragment替换本界面上占位的容器控件
-                manager.beginTransaction().replace(R.id.fl_container_id, new KillingStatusFragment()).commit();
+                KillingStatusFragment fragment =   new KillingStatusFragment(ra,mScan);
+                manager.beginTransaction().replace(R.id.fl_container_id, fragment).commit();
                 break;
 
         }
