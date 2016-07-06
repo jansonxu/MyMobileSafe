@@ -1,6 +1,6 @@
 package com.l000phone.mymobilesafe.weishi.fragment;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.l000phone.mymobilesafe.R;
+import com.l000phone.mymobilesafe.weishi.activity.KillActivity;
+import com.l000phone.mymobilesafe.weishi.activity.ScanResultShowActivity;
 import com.l000phone.mymobilesafe.weishi.dao.AntiVirusDao;
 import com.l000phone.mymobilesafe.weishi.entity.AppStatusInfo;
 import com.l000phone.mymobilesafe.weishi.util.Md5Encoder;
@@ -48,6 +50,11 @@ import java.util.Set;
  */
 public class KillingStatusFragment extends Fragment implements View.OnClickListener {
 
+    private  ImageView mScan;
+    private ImageView mKilling;
+    private TextView mStartScan;
+    private KillDefaultFragment fragment;
+    private FragmentManager manager;
     private TextView mCurrentApk;
     private LinearLayout mCategory;
     private Button mCancel;
@@ -62,7 +69,6 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
     private HashSet<AppStatusInfo> infoTmp;
 
     private RotateAnimation ra;
-    private ImageView iv;
     private Map<Animation, ImageView> animations;//动画以及对应的ImageView控件实例存储容器
     private List<TextView> scanStatusContainer;//扫描完成情况展示TextView实例存储容器
 
@@ -71,10 +77,22 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
     public KillingStatusFragment() {
     }
 
-    @SuppressLint("ValidFragment")
-    public KillingStatusFragment(RotateAnimation ra, ImageView iv) {
+
+    /**
+     * @param ra              宿主传递过来的旋转动画实例
+     * @param mScan      宿主传递过来的开启扫描动画图片控件ImageView
+     * @param mStartScan      宿主传递过来的开启扫描TextView
+     * @param mKilling        宿主传递过来的用于展现目前扫面病毒类型图片的ImageView控件
+     * @param manager         宿主传递过来的FragmentManager实例
+     * @param defaultFragment 宿主传递过来的默认Fragment实例
+     */
+    public KillingStatusFragment(RotateAnimation ra, ImageView mScan, TextView mStartScan, ImageView mKilling, FragmentManager manager, KillDefaultFragment defaultFragment) {
         this.ra = ra;
-        this.iv = iv;
+        this.mScan = mScan;
+        this.mStartScan = mStartScan;
+        this.mKilling = mKilling;
+        this.manager = manager;
+        this.fragment = defaultFragment;
     }
 
     @Override
@@ -108,6 +126,18 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
                         //让宿主中的动画停止
                         ra.cancel();
+                        //扫描界面复原
+                        manager.beginTransaction().replace(R.id.fl_container_id, fragment).commit();
+
+                        //边框和文字复原
+                        mStartScan.setBackgroundResource(R.drawable.repair_shape);
+                        mStartScan.setText("快速扫描");
+
+                        //扫描指针隐藏
+                        mScan.setVisibility(View.INVISIBLE);
+
+                        //扫描完毕，跳转到目的界面展示扫描结果
+                        startActivity(new Intent(activity, ScanResultShowActivity.class));
                         break;
                     default:
                 }
@@ -134,12 +164,16 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
         mCurrentApk.setText("正在扫描：" + info.applicationInfo.loadLabel(pm));
 
-
         //b）根据子线程扫描得到的应用的详情，将应用进行归类,置于List关联的数据源中
         //分成三类：漏洞监测，支付安全，病毒木马
         AppStatusInfo appInfo = new AppStatusInfo();
         appInfo.setStatus("扫描中");
         appInfo.setCatogory(category);
+
+        //根据病毒类型，更新扫描的图示
+        updateScanPic(category);
+
+
         boolean isSuccess = infoTmp.add(appInfo);
         //若成功，向ListView中添加子项
         if (isSuccess) {
@@ -167,6 +201,30 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
     }
 
     /**
+     * 根据病毒类型，更新扫描的图示
+     *
+     * @param category
+     */
+    private void updateScanPic(String category) {
+        //修改宿主界面中，图片下方的文字
+        mStartScan.setBackgroundColor(activity.getResources().getColor(R.color.checkBeforeColor));
+        mStartScan.setText("正在扫描:"+category);
+
+        switch (category) {
+            case "漏洞监测":
+                mKilling.setImageResource(R.mipmap.vulnerability_monitoring);
+                break;
+            case "支付安全":
+                mKilling.setImageResource(R.mipmap.pay_safe);
+                break;
+            case "病毒木马":
+                mKilling.setImageResource(R.mipmap.killing);
+                break;
+        }
+    }
+
+
+    /**
      * 扫描完成
      *
      * @param index
@@ -191,6 +249,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
         //找到界面上关心的控件
         //①显示目前扫描到哪个apk
         mCurrentApk = (TextView) view.findViewById(R.id.tv_current_apk_id);
+
         //②显示扫描的病毒种类（通过ListView来呈现）
         mCategory = (LinearLayout) view.findViewById(R.id.lv_category_id);
         //③取消扫描按钮
@@ -215,7 +274,10 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btn_cancel_id://取消
                 isCancel = true;
+                scanOver(0);//本界面上的扫描类别子项也要停止扫描
                 ra.cancel();//宿主中的动画停止
+                manager.beginTransaction().replace(R.id.fl_container_id, fragment).commit();
+                startActivity(new Intent(activity, KillActivity.class));//跳转到杀毒扫描初始界面
                 Toast.makeText(activity, "您已取消安全扫描", Toast.LENGTH_LONG).show();
                 break;
             default:
@@ -244,7 +306,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
                 //遍历移动终端设备上所有apk信息，存入相应的容器
                 for (PackageInfo info : packinfos) {
-                    Log.i("PackageInfo", info.toString());
+                    //    Log.i("PackageInfo", info.toString());
 
                     if (info.packageName.startsWith("com.android.")) {
                         vulnerabilityMonitoring.add(info);
@@ -256,14 +318,21 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
                 }
 
                 //依次扫描相应种类的apk应用
-                //①扫描“漏洞监测”
-                scanApk(vulnerabilityMonitoring, "漏洞监测", 400);
+                //若用户没有取消扫描
+                if (!isCancel) {
+                    //①扫描“漏洞监测”
+                    scanApk(vulnerabilityMonitoring, "漏洞监测", 400);
+                    if (!isCancel) {
+                        //②扫描“支付安全”
+                        scanApk(paySafe, "支付安全", 400);
+                        if (!isCancel) {
+                            //③扫描“病毒木马”
+                            scanApk(virusTrojan, "病毒木马", 666);
+                        }
+                    }
+                }
 
-                //②扫描“支付安全”
-                scanApk(paySafe, "支付安全", 400);
 
-                //③扫描“病毒木马”
-                scanApk(virusTrojan, "病毒木马", 666);
             }
         }.start();
     }
@@ -309,6 +378,8 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
                 handler.sendMessage(msg);
 
                 SystemClock.sleep(150);
+            } else {
+                return;
             }
 
         }

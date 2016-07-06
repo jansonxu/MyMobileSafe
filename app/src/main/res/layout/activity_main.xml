@@ -36,7 +36,7 @@
             android:background="@drawable/tool_selector"
 
             android:button="@null" />
-        <!-- 工具箱-->
+        <!-- 服务-->
         <RadioButton
             android:id="@+id/rb_service_id"
             android:layout_width="wrap_content"

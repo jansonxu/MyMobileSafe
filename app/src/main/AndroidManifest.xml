@@ -32,8 +32,14 @@
         <activity
             android:name=".weishi.activity.KillActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!-- 扫描结果展示界面-->
+        <activity
+            android:name=".weishi.activity.ScanResultShowActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
 
     </application>
 

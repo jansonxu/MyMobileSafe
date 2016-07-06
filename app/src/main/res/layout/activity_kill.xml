@@ -54,7 +54,7 @@
                 android:id="@+id/iv_scan"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:src="@drawable/scan" />
         </FrameLayout>
 
@@ -65,7 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fl_scan_id"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/repair_shape"
             android:onClick="aboutKillAction"
             android:text="快速扫描"
             android:textColor="#FFFFFF" />
