@@ -3,6 +3,7 @@ package com.l000phone.mymobilesafe.weishi.fragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,7 +51,7 @@ import java.util.Set;
  */
 public class KillingStatusFragment extends Fragment implements View.OnClickListener {
 
-    private  ImageView mScan;
+    private ImageView mScan;
     private ImageView mKilling;
     private TextView mStartScan;
     private KillDefaultFragment fragment;
@@ -80,7 +81,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
     /**
      * @param ra              宿主传递过来的旋转动画实例
-     * @param mScan      宿主传递过来的开启扫描动画图片控件ImageView
+     * @param mScan           宿主传递过来的开启扫描动画图片控件ImageView
      * @param mStartScan      宿主传递过来的开启扫描TextView
      * @param mKilling        宿主传递过来的用于展现目前扫面病毒类型图片的ImageView控件
      * @param manager         宿主传递过来的FragmentManager实例
@@ -124,8 +125,6 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
                     case 666://最后一个种类也扫描完成，取值为：666
                         scanOver(0);
 
-                        //让宿主中的动画停止
-                        ra.cancel();
                         //扫描界面复原
                         manager.beginTransaction().replace(R.id.fl_container_id, fragment).commit();
 
@@ -134,7 +133,11 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
                         mStartScan.setText("快速扫描");
 
                         //扫描指针隐藏
+                        mScan.setBackgroundColor(Color.TRANSPARENT);
                         mScan.setVisibility(View.INVISIBLE);
+
+                        //让宿主中的动画停止
+                        ra.cancel();
 
                         //扫描完毕，跳转到目的界面展示扫描结果
                         startActivity(new Intent(activity, ScanResultShowActivity.class));
@@ -195,8 +198,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
             catogory.setText(appInfo.getCatogory());
             status.setText(appInfo.getStatus());
-
-            mCategory.addView(view);
+            mCategory.addView(view,0);//保证目前正在扫描的项目，显示在开始位置
         }
     }
 
@@ -208,7 +210,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
     private void updateScanPic(String category) {
         //修改宿主界面中，图片下方的文字
         mStartScan.setBackgroundColor(activity.getResources().getColor(R.color.checkBeforeColor));
-        mStartScan.setText("正在扫描:"+category);
+        mStartScan.setText("正在扫描:" + category);
 
         switch (category) {
             case "漏洞监测":
@@ -376,8 +378,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
 
                 msg.obj = nowInfo;
                 handler.sendMessage(msg);
-
-                SystemClock.sleep(150);
+                SystemClock.sleep(120);
             } else {
                 return;
             }

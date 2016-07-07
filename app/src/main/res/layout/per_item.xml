@@ -3,26 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="30dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="10dp"
+    android:paddingTop="30dp">
 
     <ImageView
         android:id="@+id/iv_scanning_animation_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:src="@mipmap/killing_animation" />
 
     <TextView
         android:id="@+id/tv_catogory_id"
         android:layout_width="0dp"
+        android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="支付安全"
-        android:textStyle="bold" />
+        android:textSize="23sp" />
 
     <TextView
         android:id="@+id/tv_scan_status_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="扫描中" />
+        android:text="扫描中"
+        android:textSize="23sp" />
 
 </LinearLayout>

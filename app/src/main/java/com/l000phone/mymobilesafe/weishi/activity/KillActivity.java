@@ -59,6 +59,7 @@ public class KillActivity extends AppCompatActivity {
         //③准备旋转动画的实例
         // 设置一个旋转的动画
         ra = (RotateAnimation) AnimationUtils.loadAnimation(this,R.anim.my_kill_rotate_animation);
+        ra.setFillAfter(true);
     }
 
     /**
