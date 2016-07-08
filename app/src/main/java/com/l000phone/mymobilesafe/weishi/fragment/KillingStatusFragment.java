@@ -3,7 +3,6 @@ package com.l000phone.mymobilesafe.weishi.fragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -132,12 +131,13 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
                         mStartScan.setBackgroundResource(R.drawable.repair_shape);
                         mStartScan.setText("快速扫描");
 
-                        //扫描指针隐藏
-                        mScan.setBackgroundColor(Color.TRANSPARENT);
-                        mScan.setVisibility(View.INVISIBLE);
-
                         //让宿主中的动画停止
                         ra.cancel();
+
+                        //扫描指针隐藏
+                        mScan.setImageResource(android.R.color.transparent);
+
+
 
                         //扫描完毕，跳转到目的界面展示扫描结果
                         startActivity(new Intent(activity, ScanResultShowActivity.class));
@@ -252,7 +252,7 @@ public class KillingStatusFragment extends Fragment implements View.OnClickListe
         //①显示目前扫描到哪个apk
         mCurrentApk = (TextView) view.findViewById(R.id.tv_current_apk_id);
 
-        //②显示扫描的病毒种类（通过ListView来呈现）
+        //②显示扫描的病毒种类（通过LinearLayout来呈现）
         mCategory = (LinearLayout) view.findViewById(R.id.lv_category_id);
         //③取消扫描按钮
         mCancel = (Button) view.findViewById(R.id.btn_cancel_id);

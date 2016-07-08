@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     @ViewInject(R.id.rg_id)
     private RadioGroup mRg;//界面上RadioGroup控件的实例
+
     private FragmentManager fragmentManager;
 
 
